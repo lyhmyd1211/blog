@@ -13,6 +13,10 @@ const routes = [
         component: () => import('../pages/detail.vue')
     },
     {
+      path: '/category',
+      component: () => import('../pages/category.vue')
+    },
+    {
         path: '/timeList',
         component: () => import('../pages/timeList.vue')
     }

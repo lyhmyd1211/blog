@@ -11,8 +11,10 @@ export default defineComponent({
   setup() {
     const articleData = ref<resultData>({ data: [], total: 0 })
     const searchData = ref<any>('')
+    const page = ref(1)
     const fetchData = async () => {
-      await getArticleList().then(res => {
+      await getArticleList({page:page.value,size:5}).then(res => {
+
         articleData.value = res
       })
     }
@@ -42,17 +44,28 @@ export default defineComponent({
 
     const searchEnter = () => {
       let params = {
-        page: 1,
-        size: 10,
+        page: page.value,
+        size: 5,
         search: searchData.value
       }
       search(params).then(res => {
         articleData.value.data = res.data
       })
     }
+    const mainBoxRef = ref(null)
+    const pageChange = (curPage:number)=>{
+      page.value = curPage
+      fetchData()
+      let top = mainBoxRef.value.offsetTop
+      console.log('top',top);
+      window.scrollTo({
+        top,
+        behavior:'smooth'
+      });
+    }
 
     const searchDom = ref<null | HTMLInputElement>(null)
-    return { articleData, day, detail, searchOpen, searchData, isSearch, searchDom, searchBlur, searchEnter }
+    return { articleData, day, detail, searchOpen, searchData, isSearch, searchDom, searchBlur, searchEnter,pageChange,page,mainBoxRef }
   },
 })
 
@@ -60,7 +73,7 @@ export default defineComponent({
 
 <template>
   <div class="home-picture"></div>
-  <div class="article-main">
+  <div class="article-main" ref="mainBoxRef">
     <div class="search">
       <el-input
         @blur="searchBlur"
@@ -119,6 +132,9 @@ export default defineComponent({
         </div>
         <el-divider></el-divider>
       </div>
+      <div style="text-align: right;" v-if="articleData.total&&articleData.total.length>0">
+        <el-pagination layout="prev, pager, next" :total="articleData.total" background @current-change="pageChange"/>
+      </div>
     </template>
     <el-empty description="暂无文章" v-else></el-empty>
   </div>
@@ -128,11 +144,12 @@ export default defineComponent({
 .home-picture {
   height: 100vh;
   width: 100%;
-  background:url('@/assets/images/home/home_bg.gif') no-repeat;
-  background-size: 100% 100%;
+  // background:url('@/assets/images/home/bg1.webp') no-repeat;
+  background-size: cover;
 }
 .article-main {
   width: 1200px;
+  // min-height:100vh;
   margin:10px auto;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   border-radius: 50px;
@@ -243,6 +260,7 @@ export default defineComponent({
     &.open {
       .el-input__inner {
         width: 500px;
+        background-color: #fff;
         transition: all 0.5s ease-in-out;
         opacity: 1;
       }

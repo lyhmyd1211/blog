@@ -56,7 +56,8 @@ export default defineComponent({
 })
 </script>
 <template>
-  <el-button @click="menuClick" class="menu-btn">菜单</el-button>
+  <div @click="menuClick" class="menu-btn"></div>
+  <!-- <el-button @click="menuClick" class="menu-btn">菜单</el-button> -->
   <el-drawer
     v-model="drawer"
     title="I am the title"
@@ -91,7 +92,7 @@ export default defineComponent({
         <router-link to="home">首页</router-link>
       </li>
       <li>
-        <router-link to="home">分类</router-link>
+        <router-link to="category">分类</router-link>
       </li>
       <li>
         <router-link to="timeList">归档</router-link>
@@ -151,6 +152,11 @@ export default defineComponent({
   top: 50px;
   left: 0;
   z-index: 1000;
+  cursor: pointer;
+  background: url('@/assets/images/menu.png') no-repeat;
+  width:56px;
+  height: 56px;
+  background-size: cover;
 }
 .top {
   height: 230px;

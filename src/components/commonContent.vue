@@ -27,7 +27,7 @@ export default defineComponent({
 .content-main {
   position: relative;
   background-color: #ddd;
-  height: 100vh;
+  // height: 100vh;
   .heads {
     text-align: center;
     height: 150px;
@@ -53,7 +53,7 @@ export default defineComponent({
     margin: auto;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: #fff;
   }
 }
 </style>
